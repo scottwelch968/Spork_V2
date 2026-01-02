@@ -1,0 +1,206 @@
+/**
+ * Admin Design System - Isolated Theme
+ * Uses original professional shadcn styling from legacy backup
+ * Completely separate from user-facing Perplexity styles
+ */
+
+:root {
+  /* Admin Base Colors - Perplexity Port */
+  --admin-bg: 0 0% 99%;
+  /* var(--bg) */
+  --admin-bg-elevated: 0 0% 100%;
+  /* var(--card) */
+  --admin-bg-muted: 240 5% 96%;
+  /* var(--muted) */
+  --admin-bg-subtle: 240 5% 96%;
+
+  /* Admin Text Colors */
+  --admin-text: 222 22% 14%;
+  /* var(--fg) */
+  --admin-text-muted: 215 15% 45%;
+  /* var(--muted-fg) */
+  --admin-text-subtle: 215 15% 45%;
+
+  /* Admin Border Colors */
+  --admin-border: 240 6% 90%;
+  /* var(--border) */
+  --admin-border-muted: 240 6% 90%;
+  --admin-border-focus: 188 70% 34%;
+  /* var(--ring) */
+
+  /* Admin Accent/Primary Colors */
+  --admin-accent: 188 70% 34%;
+  /* var(--brand) */
+  --admin-accent-hover: 188 70% 30%;
+  /* var(--brand-hover) */
+  --admin-accent-muted: 240 5% 96%;
+
+  /* Admin Secondary */
+  --admin-secondary: 240 5% 96%;
+  /* var(--secondary) */
+  --admin-secondary-text: 222 22% 14%;
+
+  /* Admin Status Colors - Kept standard or adjusted if needed */
+  --admin-success: 142 71% 45%;
+  --admin-success-muted: 142 71% 45% / 0.15;
+  --admin-warning: 38 92% 50%;
+  --admin-warning-muted: 38 92% 50% / 0.15;
+  --admin-error: 0 72% 52%;
+  /* var(--danger) */
+  --admin-error-muted: 0 72% 52% / 0.15;
+  --admin-info: 217.2 91.2% 59.8%;
+  --admin-info-muted: 217.2 91.2% 59.8% / 0.15;
+
+  /* Admin Interactive States */
+  --admin-hover: 240 5% 96%;
+  --admin-active: 240 5% 94%;
+  --admin-focus-ring: 188 70% 34%;
+  /* var(--ring) */
+
+  /* Admin Sidebar - Perplexity Port */
+  --admin-sidebar-bg: 0 0% 99%;
+  /* var(--sidebar-background) */
+  --admin-sidebar-text: 222 22% 14%;
+  /* var(--sidebar-foreground) */
+  --admin-sidebar-accent: 240 5% 92%;
+  /* var(--sidebar-accent) */
+  --admin-sidebar-border: 240 6% 90%;
+  /* var(--sidebar-border) */
+  --admin-sidebar-hover: 240 5% 92%;
+  /* var(--sidebar-hover) */
+  --admin-sidebar-ring: 188 70% 34%;
+
+  /* Admin Spacing Scale */
+  --admin-space-xs: 0.25rem;
+  --admin-space-sm: 0.5rem;
+  --admin-space-md: 0.75rem;
+  --admin-space-lg: 1rem;
+  --admin-space-xl: 1.5rem;
+  --admin-space-2xl: 2rem;
+
+  /* Admin Typography Scale */
+  --admin-font-xs: 0.75rem;
+  --admin-font-sm: 0.875rem;
+  --admin-font-base: 1rem;
+  --admin-font-lg: 1.125rem;
+  --admin-font-xl: 1.25rem;
+  --admin-font-2xl: 1.5rem;
+
+  /* Admin Border Radius - Perplexity Port (Rounded) */
+  --admin-radius: 12px;
+  /* var(--radius-lg) */
+  --admin-radius-sm: 8px;
+  --admin-radius-md: 10px;
+  --admin-radius-lg: 12px;
+
+  /* Admin Shadows */
+  --admin-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --admin-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --admin-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  --admin-shadow-soft: 0 12px 28px rgba(0, 0, 0, 0.08);
+  /* Custom soft shadow */
+
+  /* Admin Transitions */
+  --admin-transition-fast: 150ms ease;
+  --admin-transition-normal: 200ms ease;
+  --admin-transition-slow: 300ms ease;
+
+  /* Admin Chart Colors */
+  --admin-chart-1: 271 76% 53%;
+  --admin-chart-2: 217 91% 60%;
+  --admin-chart-3: 142 76% 36%;
+  --admin-chart-4: 38 92% 50%;
+  --admin-chart-5: 340 82% 52%;
+}
+
+.dark {
+  /* Admin Base Colors - Perplexity Port (Dark) */
+  --admin-bg: 222 30% 7%;
+  /* var(--bg) */
+  --admin-bg-elevated: 224 71% 4%;
+  /* var(--card) */
+  --admin-bg-muted: 215 28% 17%;
+  /* var(--muted) */
+  --admin-bg-subtle: 215 28% 17%;
+
+  /* Admin Text Colors */
+  --admin-text: 210 40% 96%;
+  /* var(--fg) */
+  --admin-text-muted: 217 18% 65%;
+  /* var(--muted-fg) */
+  --admin-text-subtle: 217 18% 65%;
+
+  /* Admin Border Colors */
+  --admin-border: 215 28% 17%;
+  /* var(--border) */
+  --admin-border-muted: 215 28% 17%;
+  --admin-border-focus: 188 70% 42%;
+  /* var(--ring) */
+
+  /* Admin Accent/Primary Colors */
+  --admin-accent: 188 70% 42%;
+  /* var(--brand) */
+  --admin-accent-hover: 188 70% 36%;
+  /* var(--brand-hover) */
+  --admin-accent-muted: 215 28% 17%;
+
+  /* Admin Secondary */
+  --admin-secondary: 215 28% 17%;
+  --admin-secondary-text: 210 40% 96%;
+
+  /* Admin Status Colors */
+  --admin-error: 0 63% 31%;
+  /* var(--danger) */
+
+  /* Admin Sidebar */
+  --admin-sidebar-bg: 224 71% 4%;
+  /* var(--sidebar-background) */
+  --admin-sidebar-text: 210 40% 96%;
+  /* var(--sidebar-foreground) */
+  --admin-sidebar-accent: 215 28% 17%;
+  --admin-sidebar-border: 215 28% 17%;
+  --admin-sidebar-hover: 215 28% 17%;
+  --admin-sidebar-ring: 188 70% 42%;
+}
+
+/* Admin container styling */
+.admin-root {
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: var(--admin-font-base);
+  line-height: 1.5;
+  color: hsl(var(--admin-text));
+  background-color: hsl(var(--admin-bg));
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Admin scrollbar styling */
+.admin-root ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.admin-root ::-webkit-scrollbar-track {
+  background: hsl(var(--admin-bg-muted));
+}
+
+.admin-root ::-webkit-scrollbar-thumb {
+  background: hsl(var(--admin-border));
+  border-radius: var(--admin-radius-sm);
+}
+
+.admin-root ::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--admin-text-muted));
+}
+
+/* Admin selection styling */
+.admin-root ::selection {
+  background-color: hsl(var(--admin-accent) / 0.2);
+  color: hsl(var(--admin-text));
+}
+
+/* Admin focus styling */
+.admin-root *:focus-visible {
+  outline: 2px solid hsl(var(--admin-focus-ring));
+  outline-offset: 2px;
+}

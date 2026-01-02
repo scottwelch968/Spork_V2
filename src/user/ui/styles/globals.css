@@ -1,0 +1,110 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* User Design System - Perplexity-style globals */
+/* Tokens (light + dark) */
+
+@layer base {
+  :root {
+    /* New Perplexity tokens */
+    --bg: 0 0% 99%;
+    --fg: 222 22% 14%;
+
+    --muted: 210 20% 96%;
+    --muted-fg: 215 15% 45%;
+
+    --card: 0 0% 100%;
+    --card-fg: 222 22% 14%;
+
+    --border: 214 20% 90%;
+    --ring: 200 90% 42%;
+
+    /* Teal-ish brand like Perplexity */
+    --brand: 188 70% 34%;
+    --brand-hover: 188 70% 30%;
+    --brand-fg: 0 0% 100%;
+
+    --danger: 0 72% 52%;
+    --danger-fg: 0 0% 100%;
+
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-2xl: 20px;
+
+    /* Map to legacy Shadcn variables for compatibility */
+    --background: var(--bg);
+    --foreground: var(--fg);
+    --primary: var(--brand);
+    --primary-foreground: var(--brand-fg);
+    --secondary: var(--muted);
+    --secondary-foreground: var(--fg);
+    --accent: var(--muted);
+    --accent-foreground: var(--fg);
+    --destructive: var(--danger);
+    --destructive-foreground: var(--danger-fg);
+    --input: var(--border);
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --bg: 222 30% 7%;
+    --fg: 210 40% 96%;
+
+    --muted: 222 22% 12%;
+    --muted-fg: 217 18% 65%;
+
+    --card: 222 24% 10%;
+    --card-fg: 210 40% 96%;
+
+    --border: 222 18% 18%;
+    --ring: 188 70% 40%;
+
+    --brand: 188 70% 42%;
+    --brand-hover: 188 70% 36%;
+    --brand-fg: 0 0% 100%;
+
+    /* Map to legacy Shadcn variables for compatibility */
+    --background: var(--bg);
+    --foreground: var(--fg);
+    --primary: var(--brand);
+    --primary-foreground: var(--brand-fg);
+    --secondary: var(--muted);
+    --secondary-foreground: var(--fg);
+    --accent: var(--muted);
+    --accent-foreground: var(--fg);
+    --destructive: var(--danger);
+    --destructive-foreground: var(--danger-fg);
+    --input: var(--border);
+  }
+
+  html, body {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-bg text-fg font-sans antialiased;
+  }
+
+  /* Smooth-ish text rendering */
+  * {
+    text-rendering: geometricPrecision;
+  }
+
+  /* Selection */
+  ::selection {
+    background: color-mix(in oklab, hsl(var(--brand)) 24%, transparent);
+  }
+}
+
+/* Default typography */
+@layer base {
+  h1 { @apply text-3xl md:text-4xl font-semibold tracking-tight; }
+  h2 { @apply text-2xl md:text-3xl font-semibold tracking-tight; }
+  h3 { @apply text-xl md:text-2xl font-semibold tracking-tight; }
+
+  p  { @apply leading-relaxed; }
+  small { @apply text-sm text-muted-fg; }
+
+  a { @apply underline underline-offset-4 decoration-border hover:decoration-fg; }
+}

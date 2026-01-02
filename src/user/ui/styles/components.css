@@ -1,0 +1,916 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .shadow-pop {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 0 4px rgba(0, 0, 0, 0.04);
+  }
+
+  .shadow-soft {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  }
+
+  .shadow-tab {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+}
+
+
+@layer components {
+
+  /* ---------------------------
+     Layout primitives
+     --------------------------- */
+  .ui-app {
+    @apply min-h-screen bg-bg text-fg;
+  }
+
+  .ui-shell {
+    @apply mx-auto max-w-[1200px] px-4 md:px-6;
+  }
+
+  .ui-sidebar {
+    @apply w-[280px] shrink-0 border-r border-border bg-card;
+  }
+
+  .ui-sidebar-section-title {
+    @apply px-3 pt-5 pb-2 text-xs font-semibold uppercase tracking-wide text-muted-fg;
+  }
+
+  .ui-sidebar-item {
+    @apply flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-fg/80 hover:text-fg hover:bg-muted transition;
+  }
+
+  .ui-sidebar-item-active {
+    @apply bg-muted text-fg;
+  }
+
+  /* Top utility bar (thin) */
+  .ui-topbar {
+    @apply sticky top-0 z-30 bg-bg/80 backdrop-blur border-b border-border;
+  }
+
+  .ui-topbar-inner {
+    @apply ui-shell flex items-center justify-between h-14;
+  }
+
+  /* ---------------------------
+     Card + surfaces
+     --------------------------- */
+  .ui-card {
+    @apply bg-card text-card-fg border border-border rounded-2xl shadow-card overflow-hidden;
+  }
+
+  .ui-card-pad {
+    @apply p-4 md:p-5;
+  }
+
+  .ui-card-header {
+    @apply flex flex-col space-y-1.5 p-5 pb-0;
+  }
+
+  .ui-card-body {
+    @apply p-5;
+  }
+
+  .ui-card-footer {
+    @apply flex items-center p-5 pt-0;
+  }
+
+  .ui-panel {
+    @apply bg-card border border-border rounded-2xl shadow-soft;
+  }
+
+  /* ---------------------------
+     Buttons - Base (structural only, no visual styles)
+     --------------------------- */
+  .ui-btn {
+    @apply inline-flex items-center justify-center gap-2 text-sm font-medium transition focus:outline-none focus:ring-2 focus:ring-ring/40 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  /* Self-contained button variants */
+  .ui-btn-primary {
+    @apply rounded-xl px-4 py-2.5 bg-brand text-brand-fg border border-transparent hover:bg-brand-hover;
+  }
+
+  .ui-btn-secondary {
+    @apply rounded-xl px-4 py-2.5 bg-muted text-foreground border border-border hover:bg-muted/80;
+  }
+
+  .ui-btn-outline {
+    @apply rounded-xl px-4 py-2.5 bg-transparent text-foreground border border-border hover:bg-muted/50;
+  }
+
+  .ui-btn-danger {
+    @apply rounded-xl px-4 py-2.5 bg-transparent text-danger border border-danger/30 hover:bg-danger/10;
+  }
+
+  .ui-btn-ghost {
+    @apply rounded-xl px-4 py-2.5 bg-transparent text-foreground border border-transparent hover:bg-muted;
+  }
+
+  .ui-btn-link {
+    @apply bg-transparent text-brand border-transparent underline-offset-4 hover:underline p-0 h-auto;
+  }
+
+  /* Button sizes (override padding/radius) */
+  .ui-btn-sm {
+    @apply px-3 py-1.5 text-xs rounded-lg;
+  }
+
+  .ui-btn-lg {
+    @apply px-6 py-3 text-base rounded-xl;
+  }
+
+  .ui-btn-icon {
+    @apply px-2.5 py-2.5 rounded-xl;
+  }
+
+  /* ---------------------------
+     Inputs
+     --------------------------- */
+  .ui-input {
+    @apply w-full rounded-2xl border border-border bg-card px-4 py-3 text-sm placeholder:text-muted-fg focus:outline-none focus:ring-2 focus:ring-ring/35 focus:border-ring/40;
+  }
+
+  .ui-textarea {
+    @apply ui-input min-h-[44px] resize-none leading-relaxed;
+  }
+
+  .ui-select-trigger {
+    @apply w-auto min-w-[140px] rounded-2xl border border-border bg-card px-4 py-2.5 text-sm cursor-pointer hover:bg-accent focus:outline-none focus:ring-2 focus:ring-ring/35 focus:border-ring/40;
+  }
+
+  /* Perplexity-like "composer" */
+  .ui-composer {
+    @apply ui-card ui-card-pad;
+  }
+
+  .ui-composer-row {
+    @apply flex items-end gap-3;
+  }
+
+  .ui-composer-actions {
+    @apply flex items-center gap-2 text-muted-fg;
+  }
+
+  .ui-composer-pill {
+    @apply inline-flex items-center gap-2 rounded-full border border-border bg-muted px-3 py-1 text-xs text-fg/80;
+  }
+
+  /* ---------------------------
+     Tabs / Segmented
+     --------------------------- */
+  .ui-tabs {
+    @apply inline-flex gap-1 rounded-2xl border border-border bg-muted p-1;
+  }
+
+  .ui-tab {
+    @apply rounded-xl px-3 py-1.5 text-sm text-muted-fg hover:text-fg hover:bg-card transition;
+  }
+
+  .ui-tab-active {
+    @apply bg-card text-fg shadow-tab;
+  }
+
+  /* ---------------------------
+     Menus / dropdown items
+     --------------------------- */
+  .ui-menu {
+    @apply ui-panel p-1;
+  }
+
+  .ui-menu-item {
+    @apply flex w-full items-center justify-between gap-3 rounded-xl px-3 py-2 text-sm text-fg/85 hover:bg-muted hover:text-fg transition;
+  }
+
+  .ui-menu-sep {
+    @apply my-1 border-t border-border;
+  }
+
+  /* ---------------------------
+     Lists - Elegant list items
+     --------------------------- */
+  .ui-list {
+    @apply space-y-0.5;
+  }
+
+  .ui-list-row {
+    @apply flex items-center justify-between gap-3 py-3;
+  }
+
+  .ui-list-item {
+    @apply relative flex items-start gap-3 px-3 py-3 cursor-pointer hover:bg-muted/40 transition-colors rounded-xl;
+  }
+
+  .ui-list-item-active {
+    @apply bg-muted/60;
+  }
+
+  .ui-list-item-content {
+    @apply flex-1 min-w-0;
+  }
+
+  .ui-list-item-title {
+    @apply text-brand font-semibold text-sm leading-tight truncate;
+  }
+
+  .ui-list-item-desc {
+    @apply mt-1 text-sm text-muted-fg line-clamp-2 leading-relaxed;
+  }
+
+  .ui-list-item-meta {
+    @apply mt-1.5 flex items-center gap-1.5 text-xs text-muted-fg;
+  }
+
+  .ui-list-item-actions {
+    @apply opacity-0 group-hover:opacity-100 transition-opacity shrink-0 pt-0.5;
+  }
+
+  .ui-kbd {
+    @apply rounded-md border border-border bg-muted px-1.5 py-0.5 text-[11px] text-muted-fg;
+  }
+
+  /* ---------------------------
+     Chips / badges
+     --------------------------- */
+  .ui-chip {
+    @apply inline-flex items-center gap-1 rounded-full border border-border bg-muted px-2.5 py-1 text-xs text-fg/80;
+  }
+
+  .ui-badge {
+    @apply inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-[11px] text-muted-fg;
+  }
+
+  /* ---------------------------
+     Tables
+     --------------------------- */
+  .ui-table {
+    @apply w-full text-sm;
+  }
+
+  .ui-th {
+    @apply text-left text-xs font-semibold uppercase tracking-wide text-muted-fg py-3;
+  }
+
+  .ui-td {
+    @apply py-3 text-fg/85;
+  }
+
+  .ui-tr {
+    @apply border-t border-border;
+  }
+
+  /* ---------------------------
+     "Artifacts" grid cards
+     --------------------------- */
+  .ui-artifact-grid {
+    @apply grid gap-4 sm:grid-cols-2 lg:grid-cols-3;
+  }
+
+  .ui-artifact-card {
+    @apply ui-card hover:shadow-pop transition;
+  }
+
+  .ui-artifact-thumb {
+    @apply aspect-[16/10] bg-muted;
+  }
+
+  .ui-artifact-meta {
+    @apply ui-card-pad pt-3;
+  }
+
+  /* ---------------------------
+     Micro-interaction helpers
+     --------------------------- */
+  .ui-fade-up {
+    @apply animate-fade-up;
+  }
+
+  .ui-thinking-dot {
+    @apply inline-block h-2 w-2 rounded-full bg-muted-fg animate-pulse-soft;
+  }
+
+  /* ---------------------------
+   Tabs: Sub-Menu Variant
+   Secondary/nested tabs matching form field styling
+   Height: h-9 (36px) | Radius: rounded-lg | Border: border-gray-200
+   Use for secondary navigation within sections
+   NO DEVIATIONS
+   --------------------------- */
+  .ui-tabs-sub {
+    @apply flex items-center gap-2;
+  }
+
+  .ui-tab-sub {
+    @apply h-9 inline-flex items-center justify-center px-4 text-sm font-medium rounded-lg border border-gray-200 bg-white text-muted-foreground transition-colors hover:bg-gray-100 hover:text-foreground cursor-pointer;
+  }
+
+  .ui-tab-sub[data-state="active"] {
+    @apply bg-gray-100 text-foreground border-gray-300;
+  }
+
+
+  /* ---------------------------
+   Drawer / slide-out nav (mobile / narrow)
+   --------------------------- */
+  .ui-overlay {
+    @apply fixed inset-0 z-40 bg-black/30 backdrop-blur-[2px];
+  }
+
+  .ui-drawer {
+    @apply fixed inset-y-0 left-0 z-50 w-[320px] max-w-[90vw] bg-card border-r border-border shadow-pop translate-x-0;
+  }
+
+  .ui-drawer-header {
+    @apply flex items-center justify-between px-4 py-3 border-b border-border;
+  }
+
+  .ui-drawer-title {
+    @apply text-sm font-semibold text-fg/90;
+  }
+
+  .ui-drawer-close {
+    @apply ui-btn-icon;
+  }
+
+  /* Subtle icon-rail flyout menu (like "More") */
+  .ui-flyout {
+    @apply ui-panel p-2;
+  }
+
+  /* ---------------------------
+   Icon-rail hover flyout (slide-out on hover)
+   --------------------------- */
+  .ui-rail {
+    @apply w-16 shrink-0 border-r border-border bg-card flex flex-col items-center py-3 gap-2;
+  }
+
+  .ui-rail-btn {
+    @apply ui-btn-icon border-transparent bg-transparent hover:bg-muted;
+  }
+
+  .ui-flyout-wrap {
+    @apply fixed z-50;
+  }
+
+  .ui-flyout-panel {
+    @apply ui-panel w-[220px] p-2 rounded-2xl shadow-pop border border-border bg-card;
+    transform-origin: left center;
+  }
+
+  .ui-flyout-enter {
+    @apply animate-fade-up;
+  }
+
+  /* ---------------------------
+   Tooltip (quiet)
+   --------------------------- */
+  .ui-tooltip {
+    @apply fixed z-[60] rounded-xl border border-border bg-card px-2.5 py-1.5 text-xs text-fg/85 shadow-soft;
+  }
+
+  /* ---------------------------
+   Toast (quiet, bottom-right)
+   --------------------------- */
+  .ui-toast-stack {
+    @apply fixed bottom-4 right-4 z-[70] flex flex-col gap-2;
+  }
+
+  .ui-toast {
+    @apply ui-card px-4 py-3 flex items-start gap-3 min-w-[260px] max-w-[360px];
+  }
+
+  .ui-toast-title {
+    @apply text-sm font-semibold text-fg/90;
+  }
+
+  .ui-toast-desc {
+    @apply text-sm text-muted-fg;
+  }
+
+  .ui-toast-success {
+    @apply border-border;
+  }
+
+  .ui-toast-error {
+    @apply border-border;
+  }
+
+  /* ---------------------------
+   Workflow timeline (COSMO execution visual)
+   --------------------------- */
+  .ui-workflow {
+    @apply ui-card ui-card-pad;
+  }
+
+  .ui-workflow-step {
+    @apply flex gap-3;
+  }
+
+  .ui-workflow-rail {
+    @apply flex flex-col items-center;
+  }
+
+  .ui-workflow-dot {
+    @apply h-3 w-3 rounded-full border border-border bg-card;
+  }
+
+  .ui-workflow-dot-active {
+    @apply border-transparent bg-brand;
+  }
+
+  .ui-workflow-dot-complete {
+    @apply border-transparent bg-muted-fg;
+  }
+
+  .ui-workflow-dot-error {
+    @apply border-transparent bg-danger;
+  }
+
+  .ui-workflow-line {
+    @apply w-px flex-1 bg-border mt-1;
+  }
+
+  .ui-workflow-body {
+    @apply flex-1 pb-5;
+  }
+
+  .ui-workflow-label {
+    @apply text-sm font-semibold text-fg/90;
+  }
+
+  .ui-workflow-desc {
+    @apply mt-0.5 text-sm text-muted-fg;
+  }
+
+  .ui-workflow-output {
+    @apply mt-3 ui-card ui-card-pad bg-muted/30;
+  }
+
+  /* ===================================
+   GOLDEN STYLE GUIDE - LOCKED STANDARDS
+   These styles are canonical and should be
+   used consistently across all pages.
+   =================================== */
+
+  /* ---------------------------
+   View Mode Toggle (Grid/List)
+   Height: h-9 (36px) | Border: border-gray-200 | Radius: rounded-lg
+   NO DEVIATIONS
+   --------------------------- */
+  .ui-view-toggle {
+    @apply flex items-center h-9 border border-gray-200 rounded-lg overflow-hidden bg-white;
+  }
+
+  .ui-view-toggle-btn {
+    @apply px-3 h-full flex items-center justify-center border-0 bg-transparent hover:bg-muted transition-colors;
+  }
+
+  .ui-view-toggle-btn-active {
+    @apply bg-muted;
+  }
+
+  /* ---------------------------
+   Search Bar
+   Height: h-9 (36px) | Border: border-gray-200 | Radius: rounded-lg | Width: w-72
+   NO DEVIATIONS
+   --------------------------- */
+  .ui-search-wrapper {
+    @apply relative h-9;
+  }
+
+  .ui-search-icon {
+    @apply absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none;
+  }
+
+  .ui-search-input {
+    @apply h-full w-full pl-10 pr-4 rounded-lg border border-gray-200 bg-white text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-300;
+  }
+
+  /* ---------------------------
+   Top Bar Search: Compact Variant
+   Height: h-8 (32px) | Radius: rounded-md | 2px smaller all around than standard search
+   NO DEVIATIONS
+   --------------------------- */
+  .ui-topbar-search-wrapper {
+    @apply relative h-8;
+  }
+
+  .ui-topbar-search-icon {
+    @apply absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-gray-400 pointer-events-none;
+  }
+
+  .ui-topbar-search-input {
+    @apply h-full w-full pl-9 pr-3 rounded-md border border-gray-200 bg-white text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-300;
+  }
+
+  /* ---------------------------
+   Button: Dark Variant
+   Height: h-9 (36px) | Radius: rounded-lg | BG: #646464 | Hover: #8C8C8C
+   NO DEVIATIONS
+   --------------------------- */
+  .ui-btn-dark {
+    @apply h-9 inline-flex items-center justify-center gap-2 px-5 rounded-lg bg-[#646464] text-white text-sm font-medium border border-transparent hover:bg-[#8C8C8C] transition-colors;
+  }
+
+  /* ---------------------------
+   Button: Light Variant
+   Height: h-9 (36px) | Radius: rounded-lg | BG: background (page color) | Hover: #EAEAEA | Border: gray-200
+   NO DEVIATIONS
+   --------------------------- */
+  .ui-btn-light {
+    @apply h-9 inline-flex items-center justify-center gap-2 px-5 rounded-lg bg-background text-[#181818] text-sm font-medium border border-gray-200 hover:bg-[#EAEAEA] transition-colors;
+  }
+
+  /* ---------------------------
+   Button: Top Bar Variant
+   Height: h-[34px] (34px) | Padding: px-[18px] | Radius: rounded-lg | BG: background (page color) | Hover: #EAEAEA | Border: gray-200
+   Used for: TopBar action buttons (New Space, etc.)
+   NO DEVIATIONS
+   --------------------------- */
+  .ui-btn-topbar {
+    @apply h-[34px] inline-flex items-center justify-center gap-2 px-[18px] rounded-lg bg-background text-[#181818] text-sm font-medium border border-gray-200 hover:bg-[#EAEAEA] transition-colors;
+  }
+
+  /* ---------------------------
+   Tabs: Underline Variant
+   Standard: Full-width border, 3px #464646 active indicator on top
+   Active indicator height: 3px, color: #464646
+   NO DEVIATIONS FROM THIS PATTERN
+   --------------------------- */
+  .ui-tabs-underline {
+    @apply flex items-center gap-1 bg-transparent border-0 border-b border-gray-200 relative;
+  }
+
+  .ui-tab-underline {
+    @apply inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-muted-foreground bg-transparent border-0 hover:text-foreground transition-colors relative;
+  }
+
+  .ui-tab-underline[data-state="active"] {
+    @apply text-foreground;
+  }
+
+  /* Active indicator - 3px tall, #464646, sits on top of the full-width line */
+  .ui-tab-underline[data-state="active"]::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: #464646;
+    margin-bottom: -1px;
+  }
+
+  /* ---------------------------
+   Tabs: Sub-Menu Variant
+   Secondary/nested tabs matching form field styling
+   Height: h-9 (36px) | Radius: rounded-lg | Border: border-gray-200
+   Use for secondary navigation within sections
+   NO DEVIATIONS
+   --------------------------- */
+  .ui-tabs-sub {
+    @apply flex items-center gap-2;
+  }
+
+  .ui-tab-sub {
+    @apply h-9 inline-flex items-center justify-center px-4 text-sm font-medium rounded-lg border border-gray-200 bg-white text-muted-foreground transition-colors hover:bg-gray-100 hover:text-foreground cursor-pointer;
+  }
+
+  .ui-tab-sub[data-state="active"] {
+    @apply bg-gray-100 text-foreground border-gray-300;
+  }
+
+  /* ---------------------------
+   Tabs: Segment Variant
+   Standard: rounded-lg, muted bg, contained triggers
+   --------------------------- */
+  .ui-tabs-segment {
+    @apply inline-flex items-center gap-1 p-1 bg-muted rounded-lg;
+  }
+
+  .ui-tab-segment {
+    @apply inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-muted-foreground bg-transparent rounded-md transition-colors hover:text-foreground;
+  }
+
+  .ui-tab-segment[data-state="active"] {
+    @apply bg-background text-foreground shadow-sm;
+  }
+
+  /* ---------------------------
+   Tabs: Pill Variant
+   Standard: Rounded pill buttons with subtle active state
+   --------------------------- */
+  .ui-tabs-pill {
+    @apply flex flex-wrap gap-2;
+  }
+
+  .ui-tab-pill {
+    @apply px-4 py-2 text-sm font-medium rounded-full border border-border bg-transparent text-muted-foreground transition-all hover:bg-muted/50 hover:text-foreground cursor-pointer;
+  }
+
+  .ui-tab-pill[data-state="active"] {
+    @apply bg-background text-foreground border-border shadow-sm;
+  }
+
+  /* ---------------------------
+   Tabs: Chip Variant
+   Standard: Smaller rounded chips
+   --------------------------- */
+  .ui-tabs-chip {
+    @apply flex flex-wrap gap-1.5;
+  }
+
+  .ui-tab-chip {
+    @apply px-3 py-1.5 text-xs font-medium rounded-full border border-border bg-muted/50 text-muted-foreground transition-all hover:bg-muted hover:text-foreground cursor-pointer;
+  }
+
+  .ui-tab-chip[data-state="active"] {
+    @apply bg-foreground text-background border-foreground;
+  }
+
+  /* ---------------------------
+   Tabs: Ghost Variant
+   Standard: Minimal, no background
+   --------------------------- */
+  .ui-tabs-ghost {
+    @apply flex gap-4;
+  }
+
+  .ui-tab-ghost {
+    @apply px-2 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground cursor-pointer;
+  }
+
+  .ui-tab-ghost[data-state="active"] {
+    @apply text-foreground;
+  }
+
+  /* ---------------------------
+   Tabs: Boxed Variant
+   Standard: Bordered box style
+   --------------------------- */
+  .ui-tabs-boxed {
+    @apply flex gap-1 p-1 bg-muted/50 rounded-lg border border-border;
+  }
+
+  .ui-tab-boxed {
+    @apply px-4 py-2 text-sm font-medium rounded-md text-muted-foreground transition-all cursor-pointer;
+  }
+
+  .ui-tab-boxed[data-state="active"] {
+    @apply bg-background text-foreground shadow-sm border border-border;
+  }
+
+  /* ===================================
+   TABLE LIST - CANONICAL STANDARDS
+   Two variants: With Icons, Normal (No Icon)
+   Same container/header/row styling
+   NO DEVIATIONS FROM THESE PATTERNS
+   =================================== */
+
+  /* Container - Card with border and shadow */
+  .ui-table-list-container {
+    @apply bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden;
+  }
+
+  /* Header Row - Gray background with column titles */
+  .ui-table-list-header {
+    @apply flex items-center px-4 py-3 bg-gray-50 text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-100;
+  }
+
+  .ui-table-list-header-title {
+    @apply flex-1;
+  }
+
+  .ui-table-list-header-time {
+    @apply w-32 text-right;
+  }
+
+  /* Row - With Icon (left icon slot) */
+  .ui-table-list-row {
+    @apply flex items-center gap-4 py-4 px-4 hover:bg-gray-50 cursor-pointer transition-colors border-b border-gray-100 last:border-0;
+  }
+
+  /* Row - Normal (No Icon, content starts immediately) */
+  .ui-table-list-row-normal {
+    @apply flex items-center gap-4 py-4 px-4 hover:bg-gray-50 cursor-pointer transition-colors border-b border-gray-100 last:border-0;
+  }
+
+  .ui-table-list-icon {
+    @apply w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0;
+    /* Colors set via inline style to support dynamic backgrounds */
+  }
+
+  .ui-table-list-icon-inner {
+    @apply w-5 h-5;
+  }
+
+  .ui-table-list-content {
+    @apply flex-1 min-w-0;
+  }
+
+  .ui-table-list-title {
+    @apply text-sm font-medium text-gray-900 truncate;
+  }
+
+  .ui-table-list-desc {
+    @apply text-xs text-gray-500 truncate;
+  }
+
+  .ui-table-list-time {
+    @apply text-xs text-gray-500 flex-shrink-0;
+  }
+
+  .ui-table-list-actions {
+    @apply h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0;
+  }
+
+  /* Table List Empty State */
+  .ui-table-list-empty {
+    @apply py-12 text-center text-gray-500;
+  }
+
+  .ui-table-list-empty-icon {
+    @apply w-12 h-12 mx-auto mb-3 text-gray-300;
+  }
+
+  .ui-table-list-empty-title {
+    @apply text-base text-gray-500;
+  }
+
+  .ui-table-list-empty-desc {
+    @apply text-sm text-gray-400;
+  }
+
+  /* ===================================
+   DASHBOARD CARD - MASTER CONTAINER
+   Shared wrapper for Table List & Card List variants
+   Header: Title left, Arrow link right
+   NO DEVIATIONS FROM THESE PATTERNS
+   =================================== */
+
+  /* Outer container */
+  .ui-dashboard-card {
+    @apply bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden;
+  }
+
+  /* Header row: title + arrow link */
+  .ui-dashboard-card-header {
+    @apply flex items-center justify-between px-5 py-4;
+  }
+
+  .ui-dashboard-card-title {
+    @apply text-lg font-semibold text-gray-900;
+  }
+
+  .ui-dashboard-card-link {
+    @apply w-6 h-6 text-gray-400 hover:text-gray-600 transition-colors cursor-pointer;
+  }
+
+  /* Body area */
+  .ui-dashboard-card-body {
+    @apply px-5 pb-5;
+  }
+
+  /* ===================================
+   CARD LIST - CANONICAL STANDARDS
+   Two variants: With Icons, Normal (No Icon)
+   For nested card items (like Active Spaces)
+   NO DEVIATIONS FROM THESE PATTERNS
+   =================================== */
+
+  /* Grid/flex container for card items */
+  .ui-card-list {
+    @apply flex flex-col gap-3;
+  }
+
+  .ui-card-list-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 gap-3;
+  }
+
+  /* Card Item - With Icon */
+  .ui-card-list-item {
+    @apply flex items-center gap-3 p-3 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 cursor-pointer transition-colors;
+  }
+
+  /* Card Item - Normal (No Icon) */
+  .ui-card-list-item-normal {
+    @apply flex items-center gap-3 p-3 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 cursor-pointer transition-colors;
+  }
+
+  .ui-card-list-icon {
+    @apply w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 bg-blue-50 border border-blue-100;
+  }
+
+  .ui-card-list-icon-inner {
+    @apply w-5 h-5 text-blue-600;
+  }
+
+  .ui-card-list-content {
+    @apply flex-1 min-w-0;
+  }
+
+  .ui-card-list-title {
+    @apply text-sm font-medium text-gray-900 truncate;
+  }
+
+  .ui-card-list-desc {
+    @apply text-xs text-blue-500 truncate;
+  }
+
+  /* Card List Empty State */
+  .ui-card-list-empty {
+    @apply py-8 text-center text-gray-500;
+  }
+
+  .ui-card-list-empty-icon {
+    @apply w-10 h-10 mx-auto mb-2 text-gray-300;
+  }
+
+  .ui-card-list-empty-title {
+    @apply text-sm text-gray-500;
+  }
+
+  /* ===================================
+   BANNER CARD - CANONICAL STANDARDS
+   Hero/promotional banner with gradient background
+   Used for welcome messages, announcements, CTAs
+   Radius: rounded-2xl | Border: 2px #5E53D4
+   NO DEVIATIONS FROM THESE PATTERNS
+   =================================== */
+
+  /* Outer container */
+  .ui-banner-card {
+    @apply relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-600 p-5 md:p-6 w-full shadow-md;
+    border: 2px solid #5E53D4;
+  }
+
+  /* Decorative circles (optional visual flair) */
+  .ui-banner-card-decor-1 {
+    @apply absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2;
+  }
+
+  .ui-banner-card-decor-2 {
+    @apply absolute bottom-0 left-1/4 w-48 h-48 bg-white/5 rounded-full translate-y-1/2;
+  }
+
+  /* Content wrapper - above decorative elements */
+  .ui-banner-card-content {
+    @apply relative z-10 flex items-center justify-between;
+  }
+
+  /* Text area */
+  .ui-banner-card-text {
+    @apply flex-1;
+  }
+
+  /* Title - large heading, light text */
+  .ui-banner-card-title {
+    @apply text-3xl md:text-4xl font-bold text-white mb-2;
+  }
+
+  /* Subtitle - smaller, muted light text */
+  .ui-banner-card-subtitle {
+    @apply text-blue-100 text-base font-medium;
+  }
+
+  /* Image/illustration area */
+  .ui-banner-card-image {
+    @apply hidden lg:block flex-shrink-0 ml-6;
+  }
+
+  .ui-banner-card-image img {
+    @apply w-32 h-32 object-contain drop-shadow-2xl;
+  }
+
+  /* ===================================
+   MASTER PAGE LAYOUT - LOCKED STANDARD
+   Based on: Spaces page (/workspace)
+   NO DEVIATIONS WITHOUT EXPLICIT APPROVAL
+   =================================== */
+
+  /* Page Container
+   Top padding: 54px (48px TopBar + 6px spacing)
+   Side padding: 24px | Bottom padding: 24px | Max width: 1280px */
+  .ui-page-container {
+    @apply container mx-auto pt-[54px] px-6 pb-6 max-w-7xl;
+  }
+
+  /* Tab Wrapper - flex container for tabs + optional right actions */
+  .ui-tab-wrapper {
+    @apply flex items-center justify-between mb-0;
+  }
+
+  /* Tab Divider - border below tabs with 34px spacing to content */
+  .ui-tab-divider {
+    @apply border-b border-[#ACACAC] mb-[34px];
+  }
+
+  /* TopBar Actions Container - for search + create button */
+  .ui-topbar-actions {
+    @apply flex items-center gap-3;
+  }
+
+}

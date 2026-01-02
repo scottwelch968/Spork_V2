@@ -1,0 +1,136 @@
+/**
+ * Admin Design System - Isolated Theme
+ * Uses original professional shadcn styling from legacy backup
+ * Completely separate from user-facing Perplexity styles
+ */
+
+:root {
+  /* Admin Base Colors - From Legacy Shadcn */
+  --admin-bg: 0 0% 100%;              /* white background */
+  --admin-bg-elevated: 0 0% 100%;     /* card/elevated surfaces */
+  --admin-bg-muted: 210 40% 96.1%;    /* muted backgrounds */
+  --admin-bg-subtle: 210 40% 96.1%;   /* subtle backgrounds */
+  
+  /* Admin Text Colors */
+  --admin-text: 222.2 84% 4.9%;       /* dark navy foreground */
+  --admin-text-muted: 215.4 16.3% 46.9%; /* muted text */
+  --admin-text-subtle: 215.4 16.3% 46.9%; /* subtle text */
+  
+  /* Admin Border Colors */
+  --admin-border: 214.3 31.8% 91.4%;  /* light border */
+  --admin-border-muted: 214.3 31.8% 91.4%;
+  --admin-border-focus: 222.2 84% 4.9%; /* ring color */
+  
+  /* Admin Accent/Primary Colors */
+  --admin-accent: 222.2 47.4% 11.2%;  /* dark navy primary */
+  --admin-accent-hover: 222.2 47.4% 15%;
+  --admin-accent-muted: 210 40% 96.1%;
+  
+  /* Admin Secondary */
+  --admin-secondary: 210 40% 96.1%;
+  --admin-secondary-text: 222.2 47.4% 11.2%;
+  
+  /* Admin Status Colors */
+  --admin-success: 142 71% 45%;
+  --admin-success-muted: 142 71% 45% / 0.15;
+  --admin-warning: 38 92% 50%;
+  --admin-warning-muted: 38 92% 50% / 0.15;
+  --admin-error: 0 84.2% 60.2%;       /* destructive */
+  --admin-error-muted: 0 84.2% 60.2% / 0.15;
+  --admin-info: 217.2 91.2% 59.8%;
+  --admin-info-muted: 217.2 91.2% 59.8% / 0.15;
+  
+  /* Admin Interactive States */
+  --admin-hover: 210 40% 96.1%;       /* accent background */
+  --admin-active: 210 40% 94%;
+  --admin-focus-ring: 222.2 84% 4.9%;
+  
+  /* Admin Sidebar - Original Values */
+  --admin-sidebar-bg: 0 0% 98%;
+  --admin-sidebar-text: 240 5.3% 26.1%;
+  --admin-sidebar-accent: 240 4.8% 95.9%;
+  --admin-sidebar-border: 220 13% 91%;
+  --admin-sidebar-hover: 240 4.8% 94%;
+  --admin-sidebar-ring: 217.2 91.2% 59.8%;
+  
+  /* Admin Spacing Scale */
+  --admin-space-xs: 0.25rem;   /* 4px */
+  --admin-space-sm: 0.5rem;    /* 8px */
+  --admin-space-md: 0.75rem;   /* 12px */
+  --admin-space-lg: 1rem;      /* 16px */
+  --admin-space-xl: 1.5rem;    /* 24px */
+  --admin-space-2xl: 2rem;     /* 32px */
+  
+  /* Admin Typography Scale */
+  --admin-font-xs: 0.75rem;    /* 12px */
+  --admin-font-sm: 0.875rem;   /* 14px */
+  --admin-font-base: 1rem;     /* 16px */
+  --admin-font-lg: 1.125rem;   /* 18px */
+  --admin-font-xl: 1.25rem;    /* 20px */
+  --admin-font-2xl: 1.5rem;    /* 24px */
+  
+  /* Admin Border Radius - Original shadcn */
+  --admin-radius: 0.5rem;
+  --admin-radius-sm: calc(0.5rem - 4px);
+  --admin-radius-md: calc(0.5rem - 2px);
+  --admin-radius-lg: 0.5rem;
+  
+  /* Admin Shadows */
+  --admin-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --admin-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --admin-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  
+  /* Admin Transitions */
+  --admin-transition-fast: 150ms ease;
+  --admin-transition-normal: 200ms ease;
+  --admin-transition-slow: 300ms ease;
+  
+  /* Admin Chart Colors - From Legacy */
+  --admin-chart-1: 12 76% 61%;
+  --admin-chart-2: 173 58% 39%;
+  --admin-chart-3: 197 37% 24%;
+  --admin-chart-4: 43 74% 66%;
+  --admin-chart-5: 27 87% 67%;
+}
+
+/* Admin container styling */
+.admin-root {
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: var(--admin-font-base);
+  line-height: 1.5;
+  color: hsl(var(--admin-text));
+  background-color: hsl(var(--admin-bg));
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Admin scrollbar styling - subtle for professional look */
+.admin-root ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.admin-root ::-webkit-scrollbar-track {
+  background: hsl(var(--admin-bg-muted));
+}
+
+.admin-root ::-webkit-scrollbar-thumb {
+  background: hsl(var(--admin-border));
+  border-radius: var(--admin-radius-sm);
+}
+
+.admin-root ::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--admin-text-muted));
+}
+
+/* Admin selection styling */
+.admin-root ::selection {
+  background-color: hsl(var(--admin-accent) / 0.2);
+  color: hsl(var(--admin-text));
+}
+
+/* Admin focus styling */
+.admin-root *:focus-visible {
+  outline: 2px solid hsl(var(--admin-focus-ring));
+  outline-offset: 2px;
+}

@@ -1,0 +1,5 @@
+{
+  "name": "Antigravity Bridge",
+  "description": "A high-performance bridge application for Google Antigravity to manage Supabase Edge Functions and Authentication settings via the Supabase Management API.",
+  "requestFramePermissions": []
+}

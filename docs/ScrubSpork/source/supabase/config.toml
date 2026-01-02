@@ -1,0 +1,160 @@
+project_id = "mfoeucdqopqivjzenlrt"
+
+[functions.chat]
+verify_jwt = false
+
+[functions.codesandbox-create]
+verify_jwt = false
+
+[functions.process-system-event]
+verify_jwt = false
+
+[functions.manage-email-template]
+verify_jwt = false
+
+[functions.manage-email-rule]
+verify_jwt = false
+
+[functions.sync-openrouter-models]
+verify_jwt = false
+
+[functions.generate-image]
+verify_jwt = false
+
+[functions.process-document]
+verify_jwt = false
+
+[functions.query-knowledge-base]
+verify_jwt = false
+
+[functions.send-workspace-invitation]
+verify_jwt = false
+
+[functions.accept-workspace-invitation]
+verify_jwt = false
+
+[functions.send-email]
+verify_jwt = false
+
+[functions.manage-email-provider]
+verify_jwt = false
+
+[functions.enhance-prompt]
+verify_jwt = false
+
+[functions.cleanup-files]
+verify_jwt = false
+
+[functions.check-file-quota]
+verify_jwt = false
+
+[functions.save-response-to-file]
+verify_jwt = false
+
+[functions.create-user]
+verify_jwt = false
+
+[functions.update-user-password]
+verify_jwt = false
+
+[functions.update-user]
+verify_jwt = false
+
+[functions.generate-docs]
+verify_jwt = false
+
+[functions.track-usage]
+verify_jwt = false
+
+[functions.check-quota]
+verify_jwt = false
+
+[functions.manage-subscription]
+verify_jwt = false
+
+[functions.purchase-credits]
+verify_jwt = false
+
+[functions.billing-webhooks]
+verify_jwt = false
+
+[functions.analyze-code]
+verify_jwt = false
+
+[functions.analyze-project]
+verify_jwt = false
+
+[functions.spork-edit]
+verify_jwt = false
+
+[functions.spork-tool-api]
+verify_jwt = false
+
+[functions.github-sync]
+verify_jwt = false
+
+[functions.system-auth]
+verify_jwt = false
+
+[functions.manage-system-user]
+verify_jwt = false
+
+[functions.bootstrap-admin]
+verify_jwt = false
+
+[functions.supabase-sync]
+verify_jwt = false
+
+[functions.report-test-results]
+verify_jwt = false
+
+[functions.save-image-to-media]
+verify_jwt = false
+
+[functions.cleanup-expired-images]
+verify_jwt = false
+
+[functions.cleanup-orphaned-files]
+verify_jwt = false
+
+[functions.migrate-template-images]
+verify_jwt = false
+
+[functions.cosmo-webhook]
+verify_jwt = false
+
+[functions.cosmo-task]
+verify_jwt = false
+
+[functions.cosmo-agent]
+verify_jwt = false
+
+[functions.cosmo-queue-processor]
+verify_jwt = false
+
+[functions.external-oauth-init]
+verify_jwt = false
+
+[functions.external-oauth-callback]
+verify_jwt = false
+
+[functions.external-integration-call]
+verify_jwt = false
+
+[functions.external-integration-status]
+verify_jwt = false
+
+[functions.cosmo-enqueue]
+verify_jwt = false
+
+[functions.admin-data]
+verify_jwt = false
+
+[functions.chat-messages]
+verify_jwt = false
+
+[functions.space-content]
+verify_jwt = false
+
+[functions.folder-operations]
+verify_jwt = false

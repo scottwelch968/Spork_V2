@@ -1,0 +1,65 @@
+
+#root {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  text-align: left;
+}
+
+.monnai-gradient-bg {
+  background: linear-gradient(90deg, #fb9400, #ff00aa, #5100ff);
+}
+
+.monnai-gradient-text {
+  background-image: linear-gradient(90deg, #fb9400, #ff00aa, #5100ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+}
+
+/* Add a branded button style */
+.btn-monnai {
+  background-color: #5100ff;
+  color: #ffffff;
+  transition: all 0.3s ease;
+}
+
+.btn-monnai:hover {
+  background-color: #4000cc;
+}
+
+.btn-monnai-gradient {
+  background: linear-gradient(90deg, #fb9400, #ff00aa, #5100ff);
+  color: #ffffff;
+  transition: all 0.3s ease;
+}
+
+.btn-monnai-gradient:hover {
+  opacity: 0.9;
+}
+
+/* Monnai colors */
+.bg-monnai-yellow {
+  background-color: #fb9400;
+}
+
+.bg-monnai-pink {
+  background-color: #ff00aa;
+}
+
+.bg-monnai-blue {
+  background-color: #5100ff;
+}
+
+.text-monnai-yellow {
+  color: #fb9400;
+}
+
+.text-monnai-pink {
+  color: #ff00aa;
+}
+
+.text-monnai-blue {
+  color: #5100ff;
+}

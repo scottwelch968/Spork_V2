@@ -1,0 +1,455 @@
+/* =============================================================
+   LAUNCHPAD - Isolated Stylesheet
+   This file contains all unique styles for the Admin Launchpad.
+   Scoped under .launchpad-container to prevent style leakage.
+   Light theme matching admin panel design.
+   ============================================================= */
+
+/* -------------------------------------------------------------
+   CSS Variables - Launchpad Theme (Light Mode)
+   ------------------------------------------------------------- */
+.launchpad-container {
+  /* Base colors - matching admin light theme */
+  --lp-bg: 0 0% 100%;
+  --lp-panel-bg: 240 5% 96%;
+  --lp-header-bg: 0 0% 100%;
+  --lp-border: 240 6% 90%;
+  --lp-border-subtle: 240 6% 92%;
+  
+  /* Chat Panel Colors */
+  --lp-chat-bg: 0 0% 100%;
+  --lp-chat-header: 0 0% 100%;
+  --lp-user-bubble: 271 76% 53%;
+  --lp-assistant-bubble: 240 5% 96%;
+  
+  /* Code Editor */
+  --lp-editor-bg: 0 0% 99%;
+  --lp-editor-gutter: 240 5% 96%;
+  --lp-line-numbers: 0 0% 55%;
+  --lp-active-line: 240 5% 94%;
+  --lp-selection: 271 76% 53% / 0.15;
+  
+  /* File Explorer */
+  --lp-explorer-bg: 0 0% 100%;
+  --lp-folder-icon: 45 93% 47%;
+  --lp-file-active: 271 76% 53% / 0.1;
+  
+  /* Tabs */
+  --lp-tab-bg: 240 5% 98%;
+  --lp-tab-active: 0 0% 100%;
+  --lp-tab-hover: 240 5% 96%;
+  
+  /* Status Bar */
+  --lp-status-bg: 240 5% 96%;
+  --lp-status-text: 0 0% 45%;
+  
+  /* Accent Colors - Primary purple from design system */
+  --lp-accent: 271 76% 53%;
+  --lp-accent-hover: 271 76% 45%;
+  --lp-accent-muted: 271 76% 53% / 0.1;
+  
+  /* Text Colors */
+  --lp-text: 0 0% 13%;
+  --lp-text-muted: 0 0% 45%;
+  --lp-text-subtle: 0 0% 55%;
+  
+  /* Syntax Highlighting */
+  --lp-syntax-keyword: 271 76% 50%;
+  --lp-syntax-string: 142 76% 36%;
+  --lp-syntax-number: 38 92% 50%;
+  --lp-syntax-function: 217 91% 60%;
+  --lp-syntax-comment: 0 0% 55%;
+}
+
+/* -------------------------------------------------------------
+   Base Container
+   ------------------------------------------------------------- */
+.launchpad-container {
+  background: hsl(var(--lp-bg));
+  color: hsl(var(--lp-text));
+}
+
+/* -------------------------------------------------------------
+   Header Styles
+   ------------------------------------------------------------- */
+.lp-header {
+  background: hsl(var(--lp-header-bg));
+  border-color: hsl(var(--lp-border));
+}
+
+.lp-header-tabs {
+  background: hsl(var(--lp-panel-bg));
+}
+
+.lp-header-tab {
+  color: hsl(var(--lp-text-muted));
+  transition: all 0.15s ease;
+}
+
+.lp-header-tab:hover {
+  color: hsl(var(--lp-text));
+  background: hsl(var(--lp-bg));
+}
+
+.lp-header-tab[data-state="active"] {
+  color: hsl(var(--lp-text));
+  background: hsl(var(--lp-bg));
+}
+
+.lp-model-selector {
+  background: hsl(var(--lp-bg));
+  border-color: hsl(var(--lp-border));
+  color: hsl(var(--lp-text));
+}
+
+/* -------------------------------------------------------------
+   Chat Panel Styles
+   ------------------------------------------------------------- */
+.lp-chat-panel {
+  background: hsl(var(--lp-chat-bg));
+  border-color: hsl(var(--lp-border));
+}
+
+.lp-chat-header {
+  background: hsl(var(--lp-chat-header));
+  border-color: hsl(var(--lp-border));
+}
+
+.lp-chat-icon {
+  background: hsl(var(--lp-accent-muted));
+  color: hsl(var(--lp-accent));
+}
+
+.lp-chat-mode-toggle {
+  background: hsl(var(--lp-panel-bg));
+}
+
+.lp-chat-mode-btn {
+  color: hsl(var(--lp-text-muted));
+  transition: all 0.15s ease;
+}
+
+.lp-chat-mode-btn.active {
+  background: hsl(var(--lp-bg));
+  color: hsl(var(--lp-text));
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.lp-chat-context {
+  background: hsl(var(--lp-panel-bg));
+  border-color: hsl(var(--lp-border));
+  color: hsl(var(--lp-text-muted));
+}
+
+.lp-chat-context-file {
+  background: hsl(var(--lp-bg));
+  color: hsl(var(--lp-text));
+}
+
+.lp-chat-empty {
+  background: hsl(var(--lp-accent-muted));
+}
+
+.lp-chat-empty-icon {
+  color: hsl(var(--lp-accent));
+}
+
+.lp-chat-suggestion {
+  background: hsl(var(--lp-panel-bg));
+  color: hsl(var(--lp-text-muted));
+  transition: all 0.15s ease;
+}
+
+.lp-chat-suggestion:hover {
+  background: hsl(var(--lp-border));
+  color: hsl(var(--lp-text));
+}
+
+.lp-chat-input-area {
+  border-color: hsl(var(--lp-border));
+}
+
+.lp-chat-input {
+  background: hsl(var(--lp-bg));
+  border-color: hsl(var(--lp-border));
+  color: hsl(var(--lp-text));
+}
+
+.lp-chat-input:focus {
+  background: hsl(var(--lp-bg));
+  border-color: hsl(var(--lp-accent));
+}
+
+.lp-chat-input::placeholder {
+  color: hsl(var(--lp-text-subtle));
+}
+
+.lp-chat-send-btn {
+  background: hsl(var(--lp-accent));
+  color: white;
+  transition: all 0.15s ease;
+}
+
+.lp-chat-send-btn:hover:not(:disabled) {
+  background: hsl(var(--lp-accent-hover));
+}
+
+.lp-chat-send-btn:disabled {
+  opacity: 0.5;
+}
+
+/* Message Bubbles */
+.lp-message-user {
+  background: hsl(var(--lp-user-bubble));
+  color: white;
+}
+
+.lp-message-assistant {
+  background: hsl(var(--lp-assistant-bubble));
+  color: hsl(var(--lp-text));
+}
+
+.lp-message-avatar-user {
+  background: hsl(var(--lp-accent));
+  color: white;
+}
+
+.lp-message-avatar-assistant {
+  background: hsl(var(--lp-accent-muted));
+  color: hsl(var(--lp-accent));
+}
+
+.lp-message-timestamp {
+  color: hsl(var(--lp-text-subtle));
+}
+
+.lp-thinking-indicator {
+  background: hsl(var(--lp-assistant-bubble));
+}
+
+/* -------------------------------------------------------------
+   Code Panel Styles
+   ------------------------------------------------------------- */
+.lp-code-panel {
+  background: hsl(var(--lp-editor-bg));
+}
+
+.lp-code-empty {
+  color: hsl(var(--lp-text-muted));
+}
+
+/* -------------------------------------------------------------
+   Tabs Styles
+   ------------------------------------------------------------- */
+.lp-tabs-bar {
+  background: hsl(var(--lp-tab-bg));
+  border-color: hsl(var(--lp-border));
+}
+
+.lp-tab {
+  border-color: hsl(var(--lp-border-subtle));
+  color: hsl(var(--lp-text-muted));
+  transition: all 0.15s ease;
+}
+
+.lp-tab:hover {
+  background: hsl(var(--lp-tab-hover));
+  color: hsl(var(--lp-text));
+}
+
+.lp-tab.active {
+  background: hsl(var(--lp-tab-active));
+  color: hsl(var(--lp-text));
+  border-bottom: 2px solid hsl(var(--lp-accent));
+}
+
+.lp-tab-close {
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.lp-tab:hover .lp-tab-close {
+  opacity: 1;
+}
+
+/* File type colors in tabs */
+.lp-file-ts { color: hsl(217 91% 60%); }
+.lp-file-tsx { color: hsl(217 91% 60%); }
+.lp-file-js { color: hsl(45 93% 47%); }
+.lp-file-jsx { color: hsl(45 93% 47%); }
+.lp-file-css { color: hsl(271 76% 53%); }
+.lp-file-html { color: hsl(29 54% 51%); }
+.lp-file-json { color: hsl(142 76% 36%); }
+.lp-file-md { color: hsl(var(--lp-text-muted)); }
+
+/* -------------------------------------------------------------
+   Explorer Panel Styles
+   ------------------------------------------------------------- */
+.lp-explorer {
+  background: hsl(var(--lp-explorer-bg));
+}
+
+.lp-explorer-header {
+  border-color: hsl(var(--lp-border));
+}
+
+.lp-explorer-title {
+  color: hsl(var(--lp-text-muted));
+}
+
+.lp-explorer-search {
+  background: hsl(var(--lp-bg));
+  border-color: hsl(var(--lp-border));
+  color: hsl(var(--lp-text));
+}
+
+.lp-explorer-search:focus {
+  border-color: hsl(var(--lp-accent));
+}
+
+.lp-explorer-item {
+  color: hsl(var(--lp-text));
+  transition: all 0.1s ease;
+}
+
+.lp-explorer-item:hover {
+  background: hsl(var(--lp-panel-bg));
+}
+
+.lp-explorer-item.active {
+  background: hsl(var(--lp-file-active));
+  color: hsl(var(--lp-accent));
+}
+
+.lp-explorer-folder-icon {
+  color: hsl(var(--lp-folder-icon));
+}
+
+.lp-explorer-footer {
+  background: hsl(var(--lp-status-bg));
+  border-color: hsl(var(--lp-border));
+  color: hsl(var(--lp-text-muted));
+}
+
+/* -------------------------------------------------------------
+   Suggestion Block Styles
+   ------------------------------------------------------------- */
+.lp-suggestion-block {
+  background: hsl(var(--lp-bg));
+  border-color: hsl(var(--lp-border));
+}
+
+.lp-suggestion-header {
+  background: hsl(var(--lp-panel-bg));
+  border-color: hsl(var(--lp-border));
+}
+
+.lp-suggestion-filepath {
+  color: hsl(var(--lp-text-muted));
+}
+
+.lp-suggestion-code {
+  background: hsl(var(--lp-editor-bg));
+  color: hsl(var(--lp-text));
+}
+
+.lp-suggestion-action-create {
+  background: hsl(142 76% 36% / 0.1);
+  color: hsl(142 76% 36%);
+}
+
+.lp-suggestion-action-edit {
+  background: hsl(45 93% 47% / 0.1);
+  color: hsl(45 80% 40%);
+}
+
+.lp-suggestion-action-delete {
+  background: hsl(0 84% 60% / 0.1);
+  color: hsl(0 84% 50%);
+}
+
+/* -------------------------------------------------------------
+   Status Bar Styles
+   ------------------------------------------------------------- */
+.lp-status-bar {
+  background: hsl(var(--lp-status-bg));
+  border-color: hsl(var(--lp-border));
+  color: hsl(var(--lp-status-text));
+}
+
+.lp-status-modified {
+  color: hsl(45 93% 47%);
+}
+
+/* -------------------------------------------------------------
+   Resizable Handle Customization
+   ------------------------------------------------------------- */
+.launchpad-container [data-panel-group-direction="horizontal"] > [data-panel-resize-handle-id] {
+  background: hsl(var(--lp-border));
+  transition: background 0.15s ease;
+}
+
+.launchpad-container [data-panel-group-direction="horizontal"] > [data-panel-resize-handle-id]:hover {
+  background: hsl(var(--lp-accent));
+}
+
+/* -------------------------------------------------------------
+   Scrollbar Customization
+   ------------------------------------------------------------- */
+.launchpad-container ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.launchpad-container ::-webkit-scrollbar-track {
+  background: hsl(var(--lp-bg));
+}
+
+.launchpad-container ::-webkit-scrollbar-thumb {
+  background: hsl(var(--lp-border));
+  border-radius: 4px;
+}
+
+.launchpad-container ::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--lp-text-subtle));
+}
+
+/* -------------------------------------------------------------
+   CodeMirror Theme Overrides (Light)
+   ------------------------------------------------------------- */
+.launchpad-container .cm-editor {
+  background: hsl(var(--lp-editor-bg)) !important;
+}
+
+.launchpad-container .cm-gutters {
+  background: hsl(var(--lp-editor-gutter)) !important;
+  border-color: hsl(var(--lp-border)) !important;
+  color: hsl(var(--lp-line-numbers)) !important;
+}
+
+.launchpad-container .cm-activeLineGutter {
+  background: hsl(var(--lp-active-line)) !important;
+}
+
+.launchpad-container .cm-activeLine {
+  background: hsl(var(--lp-active-line)) !important;
+}
+
+.launchpad-container .cm-selectionBackground {
+  background: hsl(var(--lp-selection)) !important;
+}
+
+.launchpad-container .cm-cursor {
+  border-left-color: hsl(var(--lp-accent)) !important;
+}
+
+.launchpad-container .cm-content {
+  color: hsl(var(--lp-text)) !important;
+}
+
+/* Markdown prose styling for light theme */
+.launchpad-container .prose {
+  --tw-prose-body: hsl(var(--lp-text));
+  --tw-prose-headings: hsl(var(--lp-text));
+  --tw-prose-code: hsl(var(--lp-text));
+}

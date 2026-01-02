@@ -1,0 +1,10 @@
+export { CollapsibleDocSection } from './CollapsibleDocSection';
+export { ProjectStructureSection } from './ProjectStructureSection';
+export { ComponentMapSection } from './ComponentMapSection';
+export { HooksSection } from './HooksSection';
+export { UtilitiesSection } from './UtilitiesSection';
+export { DependenciesSection } from './DependenciesSection';
+export { StateManagementSection } from './StateManagementSection';
+export { RoutingSection } from './RoutingSection';
+export { MigrationGuideSection } from './MigrationGuideSection';
+export { DocEditorDialog } from './DocEditorDialog';

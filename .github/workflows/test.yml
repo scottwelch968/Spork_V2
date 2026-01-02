@@ -1,0 +1,139 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run tests with coverage
+        id: test
+        run: |
+          npx vitest run --reporter=json --reporter=default --outputFile=vitest-results.json --coverage.enabled --coverage.reporter=json-summary
+        continue-on-error: true
+      
+      - name: Process and report test results
+        if: always()
+        env:
+          SUPABASE_URL: https://mfoeucdqopqivjzenlrt.supabase.co
+          TEST_WEBHOOK_SECRET: ${{ secrets.TEST_WEBHOOK_SECRET }}
+        run: |
+          node << 'EOF'
+          const fs = require('fs');
+          
+          // Read test results
+          let testResults = {};
+          try {
+            testResults = JSON.parse(fs.readFileSync('vitest-results.json', 'utf8'));
+          } catch (e) {
+            console.log('No test results file found:', e.message);
+          }
+          
+          // Read coverage summary
+          let coverage = {};
+          try {
+            coverage = JSON.parse(fs.readFileSync('coverage/coverage-summary.json', 'utf8'));
+          } catch (e) {
+            console.log('No coverage file found:', e.message);
+          }
+          
+          // Calculate totals from test results
+          const testFiles = testResults.testResults || [];
+          let total = 0, passed = 0, failed = 0, skipped = 0;
+          const failedTests = [];
+          
+          testFiles.forEach(file => {
+            file.assertionResults?.forEach(test => {
+              total++;
+              if (test.status === 'passed') passed++;
+              else if (test.status === 'failed') {
+                failed++;
+                failedTests.push({
+                  name: test.title,
+                  file: file.name.replace(process.cwd(), ''),
+                  error: test.failureMessages?.[0]?.substring(0, 500) || 'Unknown error',
+                  stack: test.failureMessages?.join('\n').substring(0, 1000)
+                });
+              }
+              else skipped++;
+            });
+          });
+          
+          // Build payload matching report-test-results edge function schema
+          const payload = {
+            run_id: `github-${process.env.GITHUB_RUN_ID || Date.now()}`,
+            branch: process.env.GITHUB_HEAD_REF || process.env.GITHUB_REF_NAME || 'unknown',
+            commit_sha: process.env.GITHUB_SHA?.substring(0, 7) || 'unknown',
+            commit_message: process.env.GITHUB_EVENT_NAME === 'pull_request' 
+              ? `PR: ${process.env.GITHUB_HEAD_REF}` 
+              : 'Push to main',
+            triggered_by: 'github-actions',
+            started_at: new Date(testResults.startTime || Date.now()).toISOString(),
+            completed_at: new Date().toISOString(),
+            duration_ms: testResults.testResults?.reduce((acc, t) => acc + (t.endTime - t.startTime), 0) || 0,
+            status: failed > 0 ? 'failed' : (total === 0 ? 'error' : 'passed'),
+            total_tests: total,
+            passed,
+            failed,
+            skipped,
+            coverage_statements: coverage.total?.statements?.pct || null,
+            coverage_branches: coverage.total?.branches?.pct || null,
+            coverage_functions: coverage.total?.functions?.pct || null,
+            coverage_lines: coverage.total?.lines?.pct || null,
+            failed_tests: failedTests,
+            coverage_details: Object.entries(coverage)
+              .filter(([k]) => k !== 'total')
+              .slice(0, 20)
+              .map(([file, data]) => ({
+                file: file.replace(process.cwd(), ''),
+                statements: data.statements?.pct || 0,
+                branches: data.branches?.pct || 0,
+                functions: data.functions?.pct || 0,
+                lines: data.lines?.pct || 0
+              }))
+          };
+          
+          console.log('Test Results Summary:');
+          console.log(`  Status: ${payload.status}`);
+          console.log(`  Total: ${total}, Passed: ${passed}, Failed: ${failed}, Skipped: ${skipped}`);
+          console.log(`  Coverage: ${payload.coverage_lines || 'N/A'}%`);
+          
+          fs.writeFileSync('test-payload.json', JSON.stringify(payload));
+          EOF
+          
+          echo "Sending results to Test Dashboard..."
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            -H "x-webhook-secret: ${TEST_WEBHOOK_SECRET}" \
+            -d @test-payload.json \
+            "${SUPABASE_URL}/functions/v1/report-test-results" \
+            --fail --silent --show-error || echo "Warning: Failed to report test results"
+      
+      - name: Upload coverage artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 30
+      
+      - name: Fail if tests failed
+        if: steps.test.outcome == 'failure'
+        run: exit 1

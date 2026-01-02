@@ -1,0 +1,1042 @@
+openapi: 3.0.3
+info:
+  title: COSMO 2.0 API
+  version: 2.0.0
+  description: >
+    COSMO 2.0 is an AI orchestration OS. This API is the canonical control plane and execution surface.
+    Spork is a thin presentation client and MUST call these endpoints (no orchestration logic in Spork).
+servers:
+  - url: https://api.cosmo.local
+    description: Local/dev placeholder
+security:
+  - bearerAuth: []
+tags:
+  - name: Execution
+  - name: Models
+  - name: Routing
+  - name: Intents
+  - name: ActionMappings
+  - name: FunctionChains
+  - name: Metrics
+  - name: Ops
+  - name: Logs
+paths:
+  /v2/execute:
+    post:
+      tags: [Execution]
+      summary: Execute a COSMO task (plan -> execute deterministically)
+      operationId: executeV2
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExecuteRequest'
+      responses:
+        '200':
+          description: Execution completed (or accepted, depending on mode)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExecuteResponse'
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '500': { $ref: '#/components/responses/ServerError' }
+
+  /v2/dry-run:
+    post:
+      tags: [Execution]
+      summary: Generate plan only (no execution)
+      operationId: dryRunV2
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DryRunRequest'
+      responses:
+        '200':
+          description: Plan generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DryRunResponse'
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '500': { $ref: '#/components/responses/ServerError' }
+
+  /v2/replay:
+    post:
+      tags: [Execution]
+      summary: Replay a prior execution by requestId
+      operationId: replayV2
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReplayRequest'
+      responses:
+        '200':
+          description: Replay results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReplayResponse'
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/TooManyRequests' }
+        '500': { $ref: '#/components/responses/ServerError' }
+
+  /v2/models:
+    get:
+      tags: [Models]
+      summary: List model catalog available to this tenant/workspace
+      operationId: listModelsV2
+      parameters:
+        - in: query
+          name: includeDisabled
+          schema: { type: boolean, default: false }
+      responses:
+        '200':
+          description: Model list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelListResponse'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '500': { $ref: '#/components/responses/ServerError' }
+  /v2/models/{modelId}:
+    put:
+      tags: [Models]
+      summary: Update a model (governed config; audited)
+      operationId: updateModelV2
+      parameters:
+        - in: path
+          name: modelId
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModelUpdateRequest'
+      responses:
+        '200':
+          description: Updated model
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelResponse'
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+        '500': { $ref: '#/components/responses/ServerError' }
+
+  /v2/routing/config:
+    get:
+      tags: [Routing]
+      summary: Get current routing configuration
+      operationId: getRoutingConfigV2
+      responses:
+        '200':
+          description: Routing config
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoutingConfigResponse'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '500': { $ref: '#/components/responses/ServerError' }
+    put:
+      tags: [Routing]
+      summary: Update routing configuration
+      operationId: updateRoutingConfigV2
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoutingConfigUpdateRequest'
+      responses:
+        '200':
+          description: Updated routing config
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoutingConfigResponse'
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '409': { $ref: '#/components/responses/Conflict' }
+        '500': { $ref: '#/components/responses/ServerError' }
+
+  /v2/intents:
+    get:
+      tags: [Intents]
+      summary: List intents (routing taxonomy)
+      operationId: listIntentsV2
+      parameters:
+        - in: query
+          name: includeInactive
+          schema: { type: boolean, default: false }
+      responses:
+        '200':
+          description: Intent list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntentListResponse'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '500': { $ref: '#/components/responses/ServerError' }
+  /v2/intents/{intentKey}:
+    put:
+      tags: [Intents]
+      summary: Update an intent definition
+      operationId: updateIntentV2
+      parameters:
+        - in: path
+          name: intentKey
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IntentUpdateRequest'
+      responses:
+        '200':
+          description: Updated intent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntentResponse'
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+        '500': { $ref: '#/components/responses/ServerError' }
+
+  /v2/action-mappings:
+    get:
+      tags: [ActionMappings]
+      summary: List intent->action mappings
+      operationId: listActionMappingsV2
+      parameters:
+        - in: query
+          name: includeInactive
+          schema: { type: boolean, default: false }
+      responses:
+        '200':
+          description: Action mapping list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionMappingListResponse'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '500': { $ref: '#/components/responses/ServerError' }
+  /v2/action-mappings/{mappingId}:
+    put:
+      tags: [ActionMappings]
+      summary: Update an action mapping
+      operationId: updateActionMappingV2
+      parameters:
+        - in: path
+          name: mappingId
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActionMappingUpdateRequest'
+      responses:
+        '200':
+          description: Updated mapping
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionMappingResponse'
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+        '500': { $ref: '#/components/responses/ServerError' }
+
+  /v2/function-chains:
+    get:
+      tags: [FunctionChains]
+      summary: List function chains (workflow definitions)
+      operationId: listFunctionChainsV2
+      parameters:
+        - in: query
+          name: includeInactive
+          schema: { type: boolean, default: false }
+      responses:
+        '200':
+          description: Function chain list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FunctionChainListResponse'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '500': { $ref: '#/components/responses/ServerError' }
+  /v2/function-chains/{chainKey}:
+    put:
+      tags: [FunctionChains]
+      summary: Update a function chain definition
+      operationId: updateFunctionChainV2
+      parameters:
+        - in: path
+          name: chainKey
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FunctionChainUpdateRequest'
+      responses:
+        '200':
+          description: Updated chain
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FunctionChainResponse'
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+        '500': { $ref: '#/components/responses/ServerError' }
+
+  /v2/metrics/costs:
+    get:
+      tags: [Metrics]
+      summary: Cost metrics (tokens/spend) over time
+      operationId: getCostMetricsV2
+      parameters:
+        - in: query
+          name: from
+          schema: { type: string, format: date-time }
+        - in: query
+          name: to
+          schema: { type: string, format: date-time }
+        - in: query
+          name: groupBy
+          schema:
+            type: string
+            enum: [hour, day, week, month]
+            default: day
+      responses:
+        '200':
+          description: Cost metrics response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CostMetricsResponse'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '500': { $ref: '#/components/responses/ServerError' }
+
+  /v2/health:
+    get:
+      tags: [Ops]
+      summary: Health status for COSMO services
+      operationId: getHealthV2
+      responses:
+        '200':
+          description: Health status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '500': { $ref: '#/components/responses/ServerError' }
+
+  /v2/queue:
+    get:
+      tags: [Ops]
+      summary: Queue status (if async execution enabled)
+      operationId: getQueueV2
+      responses:
+        '200':
+          description: Queue status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueueStatusResponse'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '500': { $ref: '#/components/responses/ServerError' }
+
+  /v2/logs:
+    get:
+      tags: [Logs]
+      summary: Query execution logs
+      operationId: queryLogsV2
+      parameters:
+        - in: query
+          name: requestId
+          schema: { type: string }
+        - in: query
+          name: level
+          schema:
+            type: string
+            enum: [debug, info, warn, error]
+        - in: query
+          name: from
+          schema: { type: string, format: date-time }
+        - in: query
+          name: to
+          schema: { type: string, format: date-time }
+        - in: query
+          name: limit
+          schema: { type: integer, minimum: 1, maximum: 200, default: 50 }
+      responses:
+        '200':
+          description: Logs result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogQueryResponse'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '500': { $ref: '#/components/responses/ServerError' }
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ErrorResponse' }
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ErrorResponse' }
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ErrorResponse' }
+    Conflict:
+      description: Conflict
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ErrorResponse' }
+    TooManyRequests:
+      description: Rate limited
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ErrorResponse' }
+    ServerError:
+      description: Server error
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  schemas:
+    JsonValue:
+      description: Any JSON value
+      oneOf:
+        - type: string
+        - type: number
+        - type: integer
+        - type: boolean
+        - type: array
+          items: { $ref: '#/components/schemas/JsonValue' }
+        - type: object
+          additionalProperties: { $ref: '#/components/schemas/JsonValue' }
+        - type: "null"
+
+    ErrorResponse:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code: { type: string, example: "INVALID_REQUEST" }
+            message: { type: string, example: "Missing required field: input" }
+            details: { $ref: '#/components/schemas/JsonValue' }
+        requestId:
+          type: string
+          description: Request correlation id if available
+
+    ExecuteRequest:
+      type: object
+      required: [input]
+      properties:
+        input:
+          type: string
+          description: User intent / task request
+        workspaceId:
+          type: string
+        userId:
+          type: string
+        mode:
+          type: string
+          enum: [sync, async]
+          default: sync
+        preferences:
+          $ref: '#/components/schemas/ExecutionPreferences'
+        context:
+          $ref: '#/components/schemas/ExecutionContext'
+        clientMeta:
+          $ref: '#/components/schemas/ClientMeta'
+
+    ExecuteResponse:
+      type: object
+      required: [requestId, status]
+      properties:
+        requestId: { type: string }
+        status:
+          type: string
+          enum: [completed, queued, failed]
+        plan:
+          $ref: '#/components/schemas/ExecutionPlan'
+        result:
+          $ref: '#/components/schemas/ExecutionResult'
+        costs:
+          $ref: '#/components/schemas/CostSummary'
+        logsUrl:
+          type: string
+          description: Optional deep link for UI
+
+    DryRunRequest:
+      type: object
+      required: [input]
+      properties:
+        input: { type: string }
+        workspaceId: { type: string }
+        userId: { type: string }
+        preferences: { $ref: '#/components/schemas/ExecutionPreferences' }
+        context: { $ref: '#/components/schemas/ExecutionContext' }
+        clientMeta: { $ref: '#/components/schemas/ClientMeta' }
+
+    DryRunResponse:
+      type: object
+      required: [requestId, plan]
+      properties:
+        requestId: { type: string }
+        plan: { $ref: '#/components/schemas/ExecutionPlan' }
+        estimatedCosts: { $ref: '#/components/schemas/CostEstimate' }
+
+    ReplayRequest:
+      type: object
+      required: [requestId]
+      properties:
+        requestId: { type: string }
+        mode:
+          type: string
+          enum: [validate_only, replay_execute]
+          default: validate_only
+
+    ReplayResponse:
+      type: object
+      required: [requestId, status]
+      properties:
+        requestId: { type: string }
+        status:
+          type: string
+          enum: [replayed, validated, failed]
+        plan: { $ref: '#/components/schemas/ExecutionPlan' }
+        result: { $ref: '#/components/schemas/ExecutionResult' }
+        costs: { $ref: '#/components/schemas/CostSummary' }
+
+    ExecutionPreferences:
+      type: object
+      properties:
+        routingProfile:
+          type: string
+          enum: [balanced, cost_optimized, performance_first, real_time]
+          default: balanced
+        forceModelId:
+          type: string
+          description: Optional manual override (admin only)
+        maxCostUsd:
+          type: number
+          minimum: 0
+        maxLatencyMs:
+          type: integer
+          minimum: 0
+
+    ExecutionContext:
+      type: object
+      properties:
+        conversationId: { type: string }
+        attachments:
+          type: array
+          items: { $ref: '#/components/schemas/AttachmentRef' }
+        knowledgeBaseIds:
+          type: array
+          items: { type: string }
+        personaId: { type: string }
+        instructionSetIds:
+          type: array
+          items: { type: string }
+
+    ClientMeta:
+      type: object
+      properties:
+        client:
+          type: string
+          example: "spork-web"
+        clientVersion:
+          type: string
+          example: "1.0.0"
+        traceId:
+          type: string
+
+    AttachmentRef:
+      type: object
+      required: [id, type]
+      properties:
+        id: { type: string }
+        type:
+          type: string
+          enum: [document, image, audio, other]
+        name: { type: string }
+        url: { type: string }
+
+    ExecutionPlan:
+      type: object
+      required: [version, steps]
+      properties:
+        version: { type: integer, example: 1 }
+        summary: { type: string }
+        steps:
+          type: array
+          items: { $ref: '#/components/schemas/PlanStep' }
+
+    PlanStep:
+      type: object
+      required: [stepId, type, description]
+      properties:
+        stepId: { type: string }
+        type:
+          type: string
+          enum: [model_call, tool_call, chain_call, transform, validate]
+        description: { type: string }
+        modelId: { type: string }
+        toolId: { type: string }
+        chainKey: { type: string }
+        inputSchema: { $ref: '#/components/schemas/JsonValue' }
+        outputSchema: { $ref: '#/components/schemas/JsonValue' }
+        requiresApproval: { type: boolean, default: false }
+
+    ExecutionResult:
+      type: object
+      properties:
+        output:
+          type: string
+        structured:
+          $ref: '#/components/schemas/JsonValue'
+        artifacts:
+          type: array
+          items: { $ref: '#/components/schemas/ArtifactRef' }
+
+    ArtifactRef:
+      type: object
+      required: [id, type]
+      properties:
+        id: { type: string }
+        type:
+          type: string
+          enum: [file, link, dataset, report]
+        name: { type: string }
+        url: { type: string }
+
+    CostEstimate:
+      type: object
+      properties:
+        estimatedInputTokens: { type: integer }
+        estimatedOutputTokens: { type: integer }
+        estimatedToolCalls: { type: integer }
+        estimatedCostUsd: { type: number }
+
+    CostSummary:
+      type: object
+      properties:
+        modelId: { type: string }
+        inputTokens: { type: integer }
+        outputTokens: { type: integer }
+        toolCalls: { type: integer }
+        costUsd: { type: number }
+        latencyMs: { type: integer }
+
+    ModelCategory:
+      type: string
+      enum: [general, coding, vision, reasoning, fast, cheap]
+
+    Model:
+      type: object
+      required: [model_id, name, provider]
+      properties:
+        model_id: { type: string }
+        name: { type: string }
+        provider: { type: string }
+        description: { type: string }
+        best_for: { $ref: '#/components/schemas/ModelCategory' }
+        best_for_description: { type: string }
+        context_length: { type: integer }
+        max_completion_tokens: { type: integer }
+        input_modalities:
+          type: array
+          items: { type: string }
+        output_modalities:
+          type: array
+          items: { type: string }
+        pricing_prompt: { type: number, description: "USD per 1M input tokens" }
+        pricing_completion: { type: number, description: "USD per 1M output tokens" }
+        default_temperature: { type: number }
+        default_top_p: { type: number }
+        default_top_k: { type: integer }
+        default_max_tokens: { type: integer }
+        default_frequency_penalty: { type: number }
+        default_presence_penalty: { type: number }
+        rate_limit_rpm: { type: integer }
+        rate_limit_tpm: { type: integer }
+        requires_api_key: { type: boolean }
+        is_free: { type: boolean }
+        is_default: { type: boolean }
+        is_active: { type: boolean }
+        display_order: { type: integer }
+        updated_at: { type: string, format: date-time }
+
+    ModelUpdateRequest:
+      type: object
+      properties:
+        name: { type: string }
+        provider: { type: string }
+        description: { type: string }
+        best_for: { $ref: '#/components/schemas/ModelCategory' }
+        best_for_description: { type: string }
+        context_length: { type: integer }
+        max_completion_tokens: { type: integer }
+        input_modalities:
+          type: array
+          items: { type: string }
+        output_modalities:
+          type: array
+          items: { type: string }
+        pricing_prompt: { type: number }
+        pricing_completion: { type: number }
+        default_temperature: { type: number }
+        default_top_p: { type: number }
+        default_top_k: { type: integer }
+        default_max_tokens: { type: integer }
+        default_frequency_penalty: { type: number }
+        default_presence_penalty: { type: number }
+        rate_limit_rpm: { type: integer }
+        rate_limit_tpm: { type: integer }
+        requires_api_key: { type: boolean }
+        is_free: { type: boolean }
+        is_default: { type: boolean }
+        is_active: { type: boolean }
+        display_order: { type: integer }
+
+    ModelResponse:
+      type: object
+      required: [data]
+      properties:
+        data: { $ref: '#/components/schemas/Model' }
+
+    ModelListResponse:
+      type: object
+      required: [data]
+      properties:
+        data:
+          type: array
+          items: { $ref: '#/components/schemas/Model' }
+
+    RoutingConfig:
+      type: object
+      properties:
+        defaultModelId: { type: string }
+        imageModelId: { type: string }
+        kbModelId: { type: string }
+        fallbackModelId: { type: string }
+        routingProfile:
+          type: string
+          enum: [balanced, cost_optimized, performance_first, real_time]
+        weights:
+          type: object
+          properties:
+            quality: { type: number }
+            cost: { type: number }
+            speed: { type: number }
+            context: { type: number }
+        budgets:
+          type: object
+          properties:
+            monthlyUsd: { type: number }
+            perRequestUsd: { type: number }
+        flags:
+          type: object
+          properties:
+            enableDynamicRouting: { type: boolean }
+            enableCostGuards: { type: boolean }
+
+    RoutingConfigUpdateRequest:
+      type: object
+      required: [config]
+      properties:
+        config: { $ref: '#/components/schemas/RoutingConfig' }
+
+    RoutingConfigResponse:
+      type: object
+      required: [data]
+      properties:
+        data:
+          type: object
+          required: [config]
+          properties:
+            config: { $ref: '#/components/schemas/RoutingConfig' }
+            updated_at: { type: string, format: date-time }
+
+    Intent:
+      type: object
+      required: [intent_key, display_name]
+      properties:
+        intent_key: { type: string }
+        display_name: { type: string }
+        description: { type: string }
+        category: { type: string }
+        keywords:
+          type: array
+          items: { type: string }
+        priority: { type: integer }
+        required_functions:
+          type: array
+          items: { type: string }
+        preferred_models:
+          type: array
+          items: { type: string }
+        context_needs:
+          type: array
+          items: { type: string }
+        is_active: { type: boolean }
+        updated_at: { type: string, format: date-time }
+
+    IntentUpdateRequest:
+      type: object
+      properties:
+        display_name: { type: string }
+        description: { type: string }
+        category: { type: string }
+        keywords:
+          type: array
+          items: { type: string }
+        priority: { type: integer }
+        required_functions:
+          type: array
+          items: { type: string }
+        preferred_models:
+          type: array
+          items: { type: string }
+        context_needs:
+          type: array
+          items: { type: string }
+        is_active: { type: boolean }
+
+    IntentResponse:
+      type: object
+      required: [data]
+      properties:
+        data: { $ref: '#/components/schemas/Intent' }
+
+    IntentListResponse:
+      type: object
+      required: [data]
+      properties:
+        data:
+          type: array
+          items: { $ref: '#/components/schemas/Intent' }
+
+    ActionType:
+      type: string
+      enum: [function, chain, model_call, external_api, system]
+
+    ActionMapping:
+      type: object
+      required: [id, intent_key, action_key, action_type]
+      properties:
+        id: { type: string }
+        intent_key: { type: string }
+        action_key: { type: string }
+        action_type: { $ref: '#/components/schemas/ActionType' }
+        action_config: { $ref: '#/components/schemas/JsonValue' }
+        parameter_patterns: { $ref: '#/components/schemas/JsonValue' }
+        required_context:
+          type: array
+          items: { type: string }
+        priority: { type: integer }
+        conditions: { $ref: '#/components/schemas/JsonValue' }
+        is_active: { type: boolean }
+        updated_at: { type: string, format: date-time }
+
+    ActionMappingUpdateRequest:
+      type: object
+      properties:
+        action_key: { type: string }
+        action_type: { $ref: '#/components/schemas/ActionType' }
+        action_config: { $ref: '#/components/schemas/JsonValue' }
+        parameter_patterns: { $ref: '#/components/schemas/JsonValue' }
+        required_context:
+          type: array
+          items: { type: string }
+        priority: { type: integer }
+        conditions: { $ref: '#/components/schemas/JsonValue' }
+        is_active: { type: boolean }
+
+    ActionMappingResponse:
+      type: object
+      required: [data]
+      properties:
+        data: { $ref: '#/components/schemas/ActionMapping' }
+
+    ActionMappingListResponse:
+      type: object
+      required: [data]
+      properties:
+        data:
+          type: array
+          items: { $ref: '#/components/schemas/ActionMapping' }
+
+    FunctionChain:
+      type: object
+      required: [chain_key, display_name, steps]
+      properties:
+        chain_key: { type: string }
+        display_name: { type: string }
+        description: { type: string }
+        is_active: { type: boolean }
+        steps:
+          type: array
+          items: { $ref: '#/components/schemas/FunctionChainStep' }
+        version: { type: integer }
+        updated_at: { type: string, format: date-time }
+
+    FunctionChainStep:
+      type: object
+      required: [stepKey, type]
+      properties:
+        stepKey: { type: string }
+        type:
+          type: string
+          enum: [function, model_call, transform, validate]
+        functionId: { type: string }
+        modelId: { type: string }
+        config: { $ref: '#/components/schemas/JsonValue' }
+
+    FunctionChainUpdateRequest:
+      type: object
+      properties:
+        display_name: { type: string }
+        description: { type: string }
+        is_active: { type: boolean }
+        steps:
+          type: array
+          items: { $ref: '#/components/schemas/FunctionChainStep' }
+
+    FunctionChainResponse:
+      type: object
+      required: [data]
+      properties:
+        data: { $ref: '#/components/schemas/FunctionChain' }
+
+    FunctionChainListResponse:
+      type: object
+      required: [data]
+      properties:
+        data:
+          type: array
+          items: { $ref: '#/components/schemas/FunctionChain' }
+
+    CostMetricPoint:
+      type: object
+      required: [ts, costUsd]
+      properties:
+        ts: { type: string, format: date-time }
+        costUsd: { type: number }
+        inputTokens: { type: integer }
+        outputTokens: { type: integer }
+        toolCalls: { type: integer }
+        modelId: { type: string }
+
+    CostMetricsResponse:
+      type: object
+      required: [data]
+      properties:
+        data:
+          type: object
+          required: [points]
+          properties:
+            points:
+              type: array
+              items: { $ref: '#/components/schemas/CostMetricPoint' }
+
+    HealthResponse:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum: [ok, degraded, down]
+        services:
+          type: array
+          items:
+            type: object
+            required: [name, status]
+            properties:
+              name: { type: string }
+              status: { type: string, enum: [ok, degraded, down] }
+              latencyMs: { type: integer }
+              details: { $ref: '#/components/schemas/JsonValue' }
+        time: { type: string, format: date-time }
+
+    QueueStatusResponse:
+      type: object
+      required: [status]
+      properties:
+        status: { type: string, enum: [enabled, disabled] }
+        depth: { type: integer }
+        active: { type: integer }
+        failed: { type: integer }
+        oldestJobTs: { type: string, format: date-time }
+
+    LogEntry:
+      type: object
+      required: [ts, level, message]
+      properties:
+        ts: { type: string, format: date-time }
+        level: { type: string, enum: [debug, info, warn, error] }
+        message: { type: string }
+        requestId: { type: string }
+        component: { type: string }
+        data: { $ref: '#/components/schemas/JsonValue' }
+
+    LogQueryResponse:
+      type: object
+      required: [data]
+      properties:
+        data:
+          type: object
+          required: [entries]
+          properties:
+            entries:
+              type: array
+              items: { $ref: '#/components/schemas/LogEntry' }
+            nextCursor: { type: string }

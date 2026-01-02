@@ -1,0 +1,6 @@
+{
+  "_instructions": "AI ASSISTANT INSTRUCTIONS: This file is a configuration template for the Antigravity Bridge application. 1. The 'projectRef' is the unique ID of the Supabase project (e.g., 'abcdefghijklmno'). 2. The 'accessToken' is the user's Personal Access Token from the Supabase Dashboard (Account > Access Tokens). 3. The 'serviceRoleKey' is the secret Service Role key found in Project Settings > API. Instruct the user to fill these values in to authenticate the application and enable full Admin capabilities (Database, Auth, Storage, Realtime).",
+  "projectRef": "INSERT_PROJECT_REF_HERE",
+  "accessToken": "sbp_INSERT_ACCESS_TOKEN_HERE",
+  "serviceRoleKey": "INSERT_SERVICE_ROLE_KEY_HERE"
+}

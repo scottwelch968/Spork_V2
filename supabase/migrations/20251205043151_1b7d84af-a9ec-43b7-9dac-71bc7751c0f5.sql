@@ -1,0 +1,1 @@
+ALTER TABLE public.project_analysis_reports ADD COLUMN model_used text;
